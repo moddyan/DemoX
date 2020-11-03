@@ -12,10 +12,28 @@ public class InputHandler : MonoBehaviour
     public float mouseY;
 
     private PlayerControls inputActions;
-
+    private CameraHandler cameraHandler;
+    
     private Vector2 movementInput;
     private Vector2 cameraInput;
-    
+
+    private void Awake()
+    {
+        cameraHandler = CameraHandler.singleton;
+    }
+
+    private void FixedUpdate()
+    {
+        var delta = Time.fixedDeltaTime;
+        if (cameraHandler != null)
+        {
+            cameraHandler.FollowTarget(delta);
+            Debug.Log(mouseX);
+            Debug.Log(mouseY);
+            cameraHandler.HandleCameraRotation(delta, mouseX, mouseY);
+        }
+    }
+
     public void OnEnable()  // TODO why public
     {
         if (inputActions == null)

@@ -16,7 +16,7 @@ public class AnimatorHandler : MonoBehaviour
         horizontal = Animator.StringToHash("Horizontal");
     }
 
-    public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement)
+    public void UpdateAnimatorValues(float verticalMovement, float horizontalMovement) 
     {
         #region Vertical
         float v = 0;

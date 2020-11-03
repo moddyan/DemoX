@@ -28,7 +28,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""Camera"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""a74f0da5-a3f0-49b4-a0bf-34b250a68d75"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
