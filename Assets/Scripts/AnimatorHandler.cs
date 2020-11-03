@@ -1,10 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimatorHandler : MonoBehaviour
 {
     public Animator anim;
+    // TODO, too much cross references
+    public InputHandler inputHandler;
+    public PlayerLocomotion playerLocomotion;
     private int vertical;
     private int horizontal;
     public bool canRotate;
@@ -12,6 +16,9 @@ public class AnimatorHandler : MonoBehaviour
     public void Initialize()
     {
         anim = GetComponent<Animator>();
+        inputHandler = GetComponentInParent<InputHandler>();
+        playerLocomotion = GetComponentInParent<PlayerLocomotion>();
+        
         vertical = Animator.StringToHash("Vertical");
         horizontal = Animator.StringToHash("Horizontal");
     }
@@ -70,6 +77,14 @@ public class AnimatorHandler : MonoBehaviour
         anim.SetFloat(horizontal, h, 0.1f, Time.deltaTime);
     }
 
+    public void PlayTargetAnimation(string targetAnim, bool isInteracting)
+    {
+        anim.applyRootMotion = isInteracting;
+        anim.SetBool("isInteracting", isInteracting);
+        anim.CrossFade(targetAnim, 0.2f);  // TODO, study and make notes
+    }
+    
+    
     public void CanRotate()
     {
         canRotate = true;
@@ -80,4 +95,21 @@ public class AnimatorHandler : MonoBehaviour
         canRotate = false;
     }
     
+    private void OnAnimatorMove()  // TODO, study and make notes
+    {
+        Debug.Log($"inputHandler.isInteracting = {inputHandler.isInteracting}, delta position = {anim.deltaPosition}");
+        if (inputHandler.isInteracting == false)
+        {
+            return;
+        }
+        
+        float delta = Time.deltaTime;
+        playerLocomotion.rigidbody.drag = 0;
+        Vector3 deltaPosition = anim.deltaPosition;
+        deltaPosition.y = 0;
+        Vector3 velocity = deltaPosition / delta;
+        playerLocomotion.rigidbody.velocity = velocity;
+        
+        
+    }
 }

@@ -56,7 +56,7 @@ public class CameraHandler : MonoBehaviour
 
         Vector3 rotation = Vector3.zero;
         rotation.y = lookAngle;
-        Quaternion targetRotation = Quaternion.Euler(rotation);
+        Quaternion targetRotation = Quaternion.Euler(rotation); 
         myTransform.rotation = targetRotation;
         
         rotation = Vector3.zero;
@@ -67,6 +67,8 @@ public class CameraHandler : MonoBehaviour
 
     private void HandleCameraCollision(float delta)
     {
+        // 如果相机碰到了物体则把相机向player移动
+        
         targetPosition = defaultPosition;
         RaycastHit hit;
         Vector3 direction = cameraTransform.position - cameraPivotTransform.position;
