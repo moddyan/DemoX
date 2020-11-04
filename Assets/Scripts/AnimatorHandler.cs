@@ -95,21 +95,20 @@ public class AnimatorHandler : MonoBehaviour
         canRotate = false;
     }
     
-    private void OnAnimatorMove()  // TODO, study and make notes
+    private void OnAnimatorMove()
     {
-        Debug.Log($"inputHandler.isInteracting = {inputHandler.isInteracting}, delta position = {anim.deltaPosition}");
         if (inputHandler.isInteracting == false)
         {
             return;
         }
         
+        // 动画有位移的情况下，把player重置回原点
         float delta = Time.deltaTime;
         playerLocomotion.rigidbody.drag = 0;
         Vector3 deltaPosition = anim.deltaPosition;
         deltaPosition.y = 0;
         Vector3 velocity = deltaPosition / delta;
         playerLocomotion.rigidbody.velocity = velocity;
-        
-        
     }
+    
 }
