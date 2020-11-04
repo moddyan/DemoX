@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
 {
+    private PlayerManager playerManager;
     private Transform cameraObject;
     private InputHandler inputHandler;
     private Vector3 moveDirection;
@@ -15,15 +16,15 @@ public class PlayerLocomotion : MonoBehaviour
     public new Rigidbody rigidbody;
     public GameObject normalCamera;
 
-    [Header("Stats")]
+    [Header("Movement Stats")]
     [SerializeField] private float movementSpeed = 5;
     [SerializeField] private float sprintSpeed = 7;
     [SerializeField] private float rotationSpeed = 10;
 
-    public bool isSprinting;
         
     void Start()
     {
+        playerManager = GetComponent<PlayerManager>();
         rigidbody = GetComponent<Rigidbody>();
         inputHandler = GetComponent<InputHandler>();
         animatorHandler = GetComponentInChildren<AnimatorHandler>();
@@ -31,17 +32,7 @@ public class PlayerLocomotion : MonoBehaviour
         myTransform = transform;
         animatorHandler.Initialize();
     }
- 
-    public void Update()  // why public
-    {
-        float delta = Time.deltaTime;
-
-        isSprinting = inputHandler.b_Input;
-        inputHandler.TickInput(delta);
-        HandleMovement(delta);
-        HandleRollingAndSprinting(delta);
-    }
-
+    
     #region Movement
 
     private Vector3 normalVector;
@@ -87,7 +78,7 @@ public class PlayerLocomotion : MonoBehaviour
         if (inputHandler.sprintFlag)
         {
             speed = sprintSpeed;
-            isSprinting = true;
+            playerManager.isSprinting = true;
             moveDirection *= speed;
         }
         else
@@ -98,7 +89,7 @@ public class PlayerLocomotion : MonoBehaviour
         Vector3 projectedVelocity = Vector3.ProjectOnPlane(moveDirection, normalVector);
         rigidbody.velocity = projectedVelocity;
 
-        animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, isSprinting);
+        animatorHandler.UpdateAnimatorValues(inputHandler.moveAmount, 0, playerManager.isSprinting);
         if (animatorHandler.canRotate)
         {
             HandleRotation(delta);
